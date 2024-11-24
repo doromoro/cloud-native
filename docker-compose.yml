@@ -12,7 +12,7 @@ services:
       MY_SQL_USER: ${MY_SQL_USER}
       MY_SQL_PASSWORD: ${MY_SQL_PASSWORD}
     ports:
-      - "3306:3306"
+      - "33306:3306"
     restart: always
 
   # User Service
@@ -68,4 +68,6 @@ services:
 networks:
   cn-network:
     driver: bridge
-#    external: true
+    external: true
+volumes:
+  mysql-data:

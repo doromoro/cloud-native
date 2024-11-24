@@ -13,12 +13,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Dumping database structure for adore
+-- Dumping database structure for survey
 DROP DATABASE IF EXISTS `survey`;
 CREATE DATABASE IF NOT EXISTS `survey` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `survey`;
 
--- Dumping structure for table adore.member
+-- Dumping structure for table survey.member
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE IF NOT EXISTS `member` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -37,11 +37,12 @@ CREATE TABLE IF NOT EXISTS `member` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table adore.survey
+-- Dumping structure for table survey.survey
 DROP TABLE IF EXISTS `survey`;
 CREATE TABLE IF NOT EXISTS `survey` (
   `state` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `survey_cnt` int DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
   `created_at` datetime(6) DEFAULT NULL,
   `id` bigint NOT NULL AUTO_INCREMENT,
   `member_id` bigint NOT NULL,
@@ -53,10 +54,9 @@ CREATE TABLE IF NOT EXISTS `survey` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table adore.survey_qst
+-- Dumping structure for table survey.survey_qst
 DROP TABLE IF EXISTS `survey_qst`;
 CREATE TABLE IF NOT EXISTS `survey_qst` (
-  `question_order` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `created_at` datetime(6) DEFAULT NULL,
   `id` bigint NOT NULL AUTO_INCREMENT,
   `survey_id` bigint NOT NULL,
@@ -69,12 +69,11 @@ CREATE TABLE IF NOT EXISTS `survey_qst` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table adore.survey_ans
+-- Dumping structure for table survey.survey_ans
 DROP TABLE IF EXISTS `survey_ans`;
 CREATE TABLE IF NOT EXISTS `survey_ans` (
   `created_at` datetime(6) DEFAULT NULL,
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `nxt_qst_id` bigint DEFAULT -1,
   `survey_qst_id` bigint NOT NULL,
   `updated_at` datetime(6) DEFAULT NULL,
   `answer_txt` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -86,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `survey_ans` (
 
 -- Data exporting was unselected.
 
--- Dumping structure for table adore.user_ans
+-- Dumping structure for table survey.user_ans
 DROP TABLE IF EXISTS `user_ans`;
 CREATE TABLE IF NOT EXISTS `user_ans` (
   `state` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -101,5 +100,21 @@ CREATE TABLE IF NOT EXISTS `user_ans` (
   CONSTRAINT `fk_user_ans_member` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`),
   CONSTRAINT `fk_user_ans_survey` FOREIGN KEY (`survey_id`) REFERENCES `survey` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table survey.user_select
+DROP TABLE IF EXISTS `user_select`;
+CREATE TABLE IF NOT EXISTS `user_ans` (
+    `created_at` datetime(6) DEFAULT NULL,
+    `id` bigint NOT NULL AUTO_INCREMENT,
+    `user_ans_id` bigint NOT NULL,
+    `qst_id` bigint NOT NULL,
+    `ans_id` bigint NOT NULL,
+    `updated_at` datetime(6) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `key_user_ans_id` (`user_ans_id`),
+    CONSTRAINT `fk_user_select_user_ans` FOREIGN KEY (`user_ans_id`) REFERENCES `user_ans` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Data exporting was unselected.
