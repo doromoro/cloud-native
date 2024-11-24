@@ -1,0 +1,71 @@
+services:
+  # MySQL
+  mysql:
+    image: mysql:8.0.34
+    networks:
+      - cn-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MY_SQL_HOST: ${MY_SQL_HOST}
+      MY_SQL_DATABASE: ${MY_SQL_DATABASE}
+      MY_SQL_USER: ${MY_SQL_USER}
+      MY_SQL_PASSWORD: ${MY_SQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    restart: always
+
+  # User Service
+  survey-service:
+    build:
+      context: ./survey-service
+      dockerfile: Dockerfile
+    container_name: survey-service
+    image: doromoro/be-survey-service:latest
+    volumes:
+      - ./logs:/logs
+    environment:
+      MY_SQL_HOST: ${MY_SQL_HOST}
+      MY_SQL_DATABASE: ${MY_SQL_DATABASE}
+      MY_SQL_USER: ${MY_SQL_USER}
+      MY_SQL_PASSWORD: ${MY_SQL_PASSWORD}
+    depends_on:
+      - mysql
+    restart: always
+    networks:
+      - cn-network
+    ports:
+      - "8084:8084"
+
+  front-survey:
+    depends_on:
+      - survey-service
+    build:
+      context: ./front-survey
+      dockerfile: Dockerfile
+    container_name: front-survey
+    image: doromoro/fe-survey-service:latest
+    ports:
+      - "5173:5173"
+#    volumes:
+#      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - cn-network
+  # Nginx
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - survey-service
+      - front-survey
+    networks:
+      - cn-network
+
+networks:
+  cn-network:
+    driver: bridge
+#    external: true

@@ -1,0 +1,53 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.env
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+/elasticsearch/data/_state/
+/elasticsearch/data/indices/
+/elasticsearch/data/snapshot_cache/
+/elasticsearch/data/node.lock
+/elasticsearch/data/nodes
+/elasticsearch/data/
+/logs/
+/fluentd/buffer/
+/gateway-service/logs/**
+/grafana/data/**
+/prometheus/data/**
+/prometheus/data/
+/auth-service/logs/auth-service.log
+/prometheus/data/data/
+/cert/
